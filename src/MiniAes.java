@@ -51,10 +51,6 @@ public class MiniAes {
 		this.addRoundKey(this.key.getRound0());
 	}
 
-	public BitSet[][] getValue() {
-		return this.value;
-	}
-
 	public byte[] getBytes() {
 		String[] string = this.toString().split("-");
 		byte parseByte = (byte) Integer.parseInt(string[0], 2);
