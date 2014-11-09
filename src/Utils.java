@@ -39,12 +39,4 @@ public class Utils {
 		multiplyByTwo.xor(value);
 		return multiplyByTwo;
 	}
-
-	public static void print(BitSet value) {
-		String result = "";
-		for (int count = 0; count < 4; count++) {
-			result = result + (value.get(count) ? 1 : 0);
-		}
-		System.out.println(result);
-	}
 }

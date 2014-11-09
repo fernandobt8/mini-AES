@@ -1,3 +1,4 @@
+import java.io.UnsupportedEncodingException;
 import java.util.BitSet;
 
 public class KeySchedule {
@@ -12,8 +13,18 @@ public class KeySchedule {
 	private BitSet[][] round1;
 	private BitSet[][] round2;
 
+	public KeySchedule(String value) {
+		try {
+			byte[] bytes = value.getBytes("UTF-8");
+			BitSet bits = BitSet.valueOf(bytes);
+			this.init(bits.get(0, 4), bits.get(4, 8), bits.get(8, 12), bits.get(12, 16));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+	}
+
 	// criação da chave que será usada nos 3 rounds do mini-AES
-	public KeySchedule(BitSet k0, BitSet k1, BitSet k2, BitSet k3) {
+	private void init(BitSet k0, BitSet k1, BitSet k2, BitSet k3) {
 		//round 0
 		this.round0 = new BitSet[2][2];
 		this.round0[0][0] = k0; //w0 = k0
@@ -65,19 +76,20 @@ public class KeySchedule {
 	}
 
 	public void print() {
-		this.printLine(this.round0);
-		this.printLine(this.round1);
-		this.printLine(this.round2);
+		this.printLine("Chave do Round 0: ", this.round0);
+		this.printLine("Chave do Round 1: ", this.round1);
+		this.printLine("Chave do Round 2: ", this.round2);
 	}
 
-	private void printLine(BitSet[][] value) {
-		String result = "";
+	private void printLine(String round, BitSet[][] value) {
 		for (int j = 0; j < 2; j++) {
-			for (int i = 0; i < 2; i++) {
-				Utils.print(value[i][j]);
-				result += "-";
+			for (int i = 1; i > -1; i--) {
+				for (int count = 3; count > -1; count--) {
+					round = round + (value[i][j].get(count) ? 1 : 0);
+				}
+				round += " ";
 			}
 		}
-		System.out.println(result);
+		System.out.println(round);
 	}
 }
