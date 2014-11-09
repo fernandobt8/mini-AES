@@ -3,29 +3,37 @@ import java.util.BitSet;
 public class Main {
 
 	public static void main(String[] args) {
-		BitSet bits = new BitSet();
-		bits.set(0, true);
-		bits.set(1, true);
-		bits.set(2, false);
-		bits.set(3, false);
+		MiniAes miniAes = new MiniAes(Utils.createBitSet(1, 0, 1, 1), Utils.createBitSet(1, 1, 0, 0), Utils.createBitSet(0, 1, 1, 0), Utils.createBitSet(0, 0, 1, 1), false);
+		KeySchedule key = new KeySchedule(Utils.createBitSet(1, 1, 0, 0), Utils.createBitSet(0, 0, 1, 1), Utils.createBitSet(1, 1, 1, 1), Utils.createBitSet(0, 0, 0, 0));
 
-		bits.set(4, false);
-		bits.set(5, false);
-		bits.set(6, true);
-		bits.set(7, true);
+		miniAes.print();
+		miniAes.addRoundKey(key.getRound0());
 
-		bits.set(8, true);
-		bits.set(9, true);
-		bits.set(10, true);
-		bits.set(11, true);
+		miniAes.subBytes();
+		miniAes.shiftRow();
+		miniAes.mixColumn();
+		miniAes.addRoundKey(key.getRound1());
 
-		bits.set(12, false);
-		bits.set(13, false);
-		bits.set(14, false);
-		bits.set(15, false);
+		miniAes.subBytes();
+		miniAes.shiftRow();
+		BitSet[][] cipher = miniAes.addRoundKey(key.getRound2());
 
-		KeySchedule keySchedule = new KeySchedule(bits);
-		keySchedule.print();
+		miniAes.print();
 
+		MiniAes miniAes2 = new MiniAes(cipher, true);
+		KeySchedule keyD = new KeySchedule(Utils.createBitSet(1, 1, 0, 0), Utils.createBitSet(0, 0, 1, 1), Utils.createBitSet(1, 1, 1, 1), Utils.createBitSet(0, 0, 0, 0));
+
+		miniAes2.addRoundKey(keyD.getRound2());
+		miniAes2.subBytes();
+		miniAes2.shiftRow();
+
+		miniAes2.addRoundKey(keyD.getRound1());
+		miniAes2.mixColumn();
+		miniAes2.subBytes();
+		miniAes2.shiftRow();
+
+		miniAes2.addRoundKey(keyD.getRound0());
+
+		miniAes2.print();
 	}
 }
