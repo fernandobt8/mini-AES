@@ -19,7 +19,7 @@ public class Main {
 						+ "Digite 3 e enter para trocar de chave.\nDigite qualquer coisa e enter para sair.");
 				readConsole = Main.readConsole();
 				if (readConsole.equals("1")) {
-					// cifra a mensagem digitada no console pegando de 16 em 16 bits e cifrando.
+					// cifra a mensagem digitada no console pegando de 16 em 16 bits e cifrando, modo ECB.
 					System.out.println("\nDigite a mensagem a cifrar.");
 					byte[] bytes = Main.readConsole().getBytes("UTF-8");
 					int blocos = bytes.length / 2;
@@ -41,7 +41,7 @@ public class Main {
 					System.out.println("Mensagem cifrada.");
 					System.out.println(new BigInteger(result).toString(36));
 				} else if (readConsole.equals("2")) {
-					// decifra a mensagem digitada no console pegando de 16 em 16 bits e decifrando.
+					// decifra a mensagem digitada no console pegando de 16 em 16 bits e decifrando, modo ECB.
 					System.out.println("\nDigite a mensagem a decifrar.");
 					byte[] bytes = new BigInteger(Main.readConsole(), 36).toByteArray();
 					int blocos = bytes.length / 2;
